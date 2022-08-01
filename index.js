@@ -71,9 +71,8 @@ const run = async (userOptions, { fs } = { fs: nativeFs }) => {
         logger.time(`ReactSnap: afterFetch ${route}`);
 
         try {
-          logger.time(`ReactSnap: fix chunks ${route}`);
-
           try {
+            logger.time(`ReactSnap: fix chunks ${route}`);
             if (options.fixWebpackChunksIssue) {
               await webpackModule.fixWebpackChunksIssue({
                 page,
@@ -89,9 +88,8 @@ const run = async (userOptions, { fs } = { fs: nativeFs }) => {
 
           await stateModule.saveState(page);
 
-          logger.time(`ReactSnap: saving as ${route}`);
-
           try {
+            logger.time(`ReactSnap: saving as ${route}`);
             const result = await saver[options.saveAs]?.({
               page,
               filePath,

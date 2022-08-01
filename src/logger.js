@@ -13,6 +13,12 @@ function createLogger(userOptions) {
     log(...messages) {
       console.log(`${this.timestamp}: `, ...messages);
     },
+    warn(...messages) {
+      console.warn(`${this.timestamp}: `, ...messages);
+    },
+    error(...messages) {
+      console.error(`${this.timestamp}: `, ...messages);
+    },
     get timestamp() {
       const date = new Date();
       const day = date.getDate().toString().padStart(2, "0");

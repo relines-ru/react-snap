@@ -28,16 +28,16 @@ const enableLogging = (opt) => {
       !text.includes(".woff2") &&
       text !== "Failed to load resource: net::ERR_FAILED"
     ) {
-      logger.log(`️️️💬  console.log at ${route}:`, text);
+      logger.log('💬  console.log at', route, ':', text);
     }
   });
   page.on("error", (msg) => {
-    logger.log(`🔥  error at ${route}:`, msg);
-    onError && onError();
+    logger.error(`🔥  error at ${route}:`, msg);
+    onError && onError(msg);
   });
   page.on("pageerror", (e) => {
-    logger.log(`🔥  pageerror at ${route}:`, e);
-    onError && onError();
+    logger.error(`🔥  pageerror at ${route}:`, e);
+    onError && onError(e);
   });
   page.on("response", (response) => {
     if (response.status() >= 400) {
@@ -47,13 +47,13 @@ const enableLogging = (opt) => {
           .headers()
           .referer.replace(`http://localhost:${options.port}`, "");
       } catch (e) {}
-      logger.log(
+      logger.warn(
         `️️️⚠️  warning at ${route}: got ${response.status()} HTTP code for ${response.url()}`
       );
     }
   });
   // page.on("requestfailed", msg =>
-  //   logger.log(`️️️⚠️  ${route} requestfailed:`, msg)
+  //   logger.error(`️️️⚠️  ${route} requestfailed:`, msg)
   // );
 };
 
@@ -230,7 +230,7 @@ const crawl = async (opt) => {
         } catch (e) {
           failRoutes.push(route);
           if (!shuttingDown) {
-            logger.log(`🔥  error at ${route}`, e);
+            logger.error(`🔥  route process error at ${route}:`, e);
           }
           shuttingDown = true;
         }
@@ -248,10 +248,8 @@ const crawl = async (opt) => {
         queue.end();
       }
 
-      logger.timeEnd(`ReactSnap: fetchPage ${pageUrl}`);
-
       return pageUrl;
-    } catch {
+    } finally {
       logger.timeEnd(`ReactSnap: fetchPage ${pageUrl}`);
     }
   };
