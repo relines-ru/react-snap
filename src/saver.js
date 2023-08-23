@@ -5,7 +5,7 @@ const minify = require("html-minifier").minify;
 const saver = {
   htmlString,
   html: async (props) => {
-    let { page, filePath, route, fs } = props;
+    let { page, filePath, route, fs, filename = 'index.html' } = props;
     const title = await page.title();
     const content = await htmlString(props);
     filePath = filePath.replace(/\//g, path.sep);
@@ -20,7 +20,7 @@ const saver = {
       if (title.includes("404"))
         console.log(`⚠️  warning: page not found ${route}`);
       mkdirp.sync(filePath);
-      fs.writeFileSync(path.join(filePath, "index.html"), content);
+      fs.writeFileSync(path.join(filePath, filename), content);
     }
   },
 };

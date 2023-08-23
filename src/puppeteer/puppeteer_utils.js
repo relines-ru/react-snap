@@ -121,7 +121,6 @@ const crawl = async (opt) => {
    */
   const addToQueue = (newUrl) => {
     const { hostname, search, hash, port } = url.parse(newUrl);
-    newUrl = newUrl.replace(`${search || ""}${hash || ""}`, "");
 
     // Ensures that only link on the same port are crawled
     //

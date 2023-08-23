@@ -84,6 +84,12 @@ const run = async (userOptions, { fs } = { fs: nativeFs }) => {
           }
 
           let routePath = route.replace(publicPath, "");
+          let filename;
+          if (options.getFileName) {
+            const result = options.getFileName(routePath);
+            routePath = result[0];
+            filename = result[1] || undefined;
+          }
           let filePath = path.join(destinationDir, routePath);
 
           await stateModule.saveState(page);
@@ -96,6 +102,7 @@ const run = async (userOptions, { fs } = { fs: nativeFs }) => {
               options,
               route,
               fs,
+              filename
             });
             if (result) {
               saveResult(result);
